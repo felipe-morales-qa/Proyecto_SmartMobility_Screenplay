@@ -1,0 +1,34 @@
+# Node
+node_modules/
+
+# Build/Outputs
+dist/
+out/
+build/
+
+# Playwright / Selenium
+playwright-report/
+test-results/
+blob-report/
+trace.zip
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env
+.env
+.env.local
+
+# IDE/OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Temp
+*.tmp
