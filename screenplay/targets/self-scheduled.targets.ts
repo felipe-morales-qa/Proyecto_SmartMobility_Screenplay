@@ -21,5 +21,5 @@ export const SelfScheduledUI = {
   buttonContinue: PageElement.located(By.xpath('//button[@class="btn btn-primary min-w-72"]')).describedAs('botón Continuar'),
 
   
-  nextPageTitle: PageElement.located(By.xpath('//h1[@class="font-extrabold xs:text-lg md:text-xl"]')),
+  nextPageTitle: PageElement.located(By.xpath('//h1[contains(@class,"font-extrabold") and contains(@class,"lg:text-2xl")]')),
 };

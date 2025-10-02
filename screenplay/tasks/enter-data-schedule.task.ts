@@ -1,5 +1,5 @@
 import { Task, Wait, Duration } from '@serenity-js/core';
-import { Click, Enter, isVisible, isClickable } from '@serenity-js/web';
+import { Click, Scroll, Enter, isVisible, isClickable } from '@serenity-js/web';
 import { Ensure } from '@serenity-js/assertions';
 import { SelfScheduledUI } from '../targets/self-scheduled.targets';
 import { generarPersonaAleatoria } from '../../utils/person_generator';
@@ -23,7 +23,11 @@ export const enterScheduleData = (contractNumber: string) => {
 
         
         Wait.upTo(Duration.ofSeconds(10)).until(SelfScheduledUI.buttonContinue, isClickable()),
+        Scroll.to(SelfScheduledUI.buttonContinue),
         Click.on(SelfScheduledUI.buttonContinue),
 
+        Wait.until(SelfScheduledUI.nextPageTitle, isVisible()),
+        Ensure.that(SelfScheduledUI.nextPageTitle, isVisible()),
+        
     );
 };
