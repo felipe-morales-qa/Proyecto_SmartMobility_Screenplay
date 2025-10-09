@@ -10,7 +10,7 @@ import { enterScheduleData } from '../screenplay/tasks/enter-data-schedule.task'
 import { selectDateAndTimeScheduling } from '../screenplay/tasks/select-date-time-scheduling.task';
 import { pickRandomContract } from '../utils/readCsv';
 
-test('Actor navega, valida título e ingresa datos con contrato desde CSV', async ({ browser }) => {
+test('Actor navega a url e ingresa datos para agendar cita', async ({ browser }) => {
 
   const actor = actorGenerico(browser);
   const csvPath = path.resolve(__dirname, '../data/contracts.csv');
