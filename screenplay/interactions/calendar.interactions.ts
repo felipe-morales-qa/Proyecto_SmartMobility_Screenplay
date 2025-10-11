@@ -1,40 +1,37 @@
-import { Interaction, Task } from '@serenity-js/core';
+import { Interaction, Wait, Duration  } from '@serenity-js/core';
 import { Click, Scroll, isVisible } from '@serenity-js/web';
 import { Ensure, isGreaterThan } from '@serenity-js/assertions';
 import { SchedulingUI } from '../targets/scheduling.targets';
 
-/** Verifica que haya al menos una fecha habilitada */
-export const CheckEnabledDays = () =>
-  Task.where(
-    `#actor verifica que existe al menos un día habilitado`,
-    Ensure.that(SchedulingUI.enabledDays.count(), isGreaterThan(0)),
-    Ensure.that(SchedulingUI.enabledDays.first(), isVisible()),
-  );
-
-/** Selecciona una fecha habilitada aleatoria */
+/**
+ * Selecciona una fecha habilitada aleatoria en el calendario.
+ * Antes de hacer clic, se asegura de que existan días habilitados
+ * y realiza scroll hasta el primer día visible del calendario.
+ */
 export const ClickRandomEnabledDate = () =>
-  Interaction.where(`#actor selecciona una fecha habilitada aleatoria`, async actor => {
+  Interaction.where(`#actor desplaza el calendario y selecciona una fecha habilitada aleatoria`, async (actor) => {
+
+    // Esperar que el calendario tenga días habilitados renderizados
+    await Wait.upTo(Duration.ofSeconds(15)).until(
+      SchedulingUI.enabledDays.count(),
+      isGreaterThan(0),
+    );
+
+    // Obtener total de días habilitados
     const total = await actor.answer(SchedulingUI.enabledDays.count());
-    if (total === 0) throw new Error('No hay fechas habilitadas en el calendario');
+    await Ensure.that(total, isGreaterThan(0)).performAs(actor);
 
-    const idx = Math.floor(Math.random() * total);
-    const target = SchedulingUI.enabledDays.nth(idx);
+    // Scroll automático al primer día habilitado
+    const firstDay = SchedulingUI.enabledDays.first();
+    await Scroll.to(firstDay).performAs(actor);
+    await Ensure.that(firstDay, isVisible()).performAs(actor);
 
-    await Ensure.that(target, isVisible()).performAs(actor);
-    await Scroll.to(target).performAs(actor);
-    await Click.on(target).performAs(actor);
+    // Seleccionar un día aleatorio entre los habilitados
+    const randomIndex = Math.floor(Math.random() * total);
+    const randomDay = SchedulingUI.enabledDays.nth(randomIndex);
+
+    // Verificar visibilidad y hacer clic
+    await Ensure.that(randomDay, isVisible()).performAs(actor);
+    await Scroll.to(randomDay).performAs(actor);
+    await Click.on(randomDay).performAs(actor);
   });
-
-/** Seleccionar fecha (robusto) */
-export const SelectDate = () =>
-  Task.where(`#actor selecciona una fecha`,
-    // ✅ primero garantizamos que el calendario está visible (si tienes el target):
-    Ensure.that(SchedulingUI.titleCalendar, isVisible()),
-    Scroll.to(SchedulingUI.titleCalendar),
-
-    // ✅ luego validamos que HAYA fechas (no esperamos al first() todavía)
-    Ensure.that(SchedulingUI.enabledDays.count(), isGreaterThan(0)),
-
-    // ✅ y ya seleccionamos una aleatoria (la interacción hace Scroll + Click)
-    ClickRandomEnabledDate(),
-  );

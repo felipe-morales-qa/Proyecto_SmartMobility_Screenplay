@@ -1,8 +1,9 @@
-import { Task, Wait, Duration } from '@serenity-js/core';
-import { Click, Scroll, Enter, isVisible, isClickable } from '@serenity-js/web';
+import { Task } from '@serenity-js/core';
+import { Click, Enter, isVisible } from '@serenity-js/web';
 import { Ensure } from '@serenity-js/assertions';
 import { SelfScheduledUI } from '../targets/self-scheduled.targets';
 import { generarPersonaAleatoria } from '../../utils/person_generator';
+import { ClickOn } from '../interactions/clics.interactions';
 
 export const enterScheduleData = (contractNumber: string) => {
     const persona = generarPersonaAleatoria();
@@ -21,13 +22,7 @@ export const enterScheduleData = (contractNumber: string) => {
         Enter.theValue(persona.attendantName).into(SelfScheduledUI.attendantName),
         Enter.theValue(persona.attendantPhone).into(SelfScheduledUI.attendantPhone),
 
-        
-        Wait.upTo(Duration.ofSeconds(10)).until(SelfScheduledUI.buttonContinue, isClickable()),
-        Scroll.to(SelfScheduledUI.buttonContinue),
-        Click.on(SelfScheduledUI.buttonContinue),
-
-        Wait.until(SelfScheduledUI.nextPageTitle, isVisible()),
-        Ensure.that(SelfScheduledUI.nextPageTitle, isVisible()),
+        ClickOn(SelfScheduledUI.buttonContinue, 'botón Continuar'),
         
     );
 };

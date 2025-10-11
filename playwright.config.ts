@@ -3,26 +3,102 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
 
-  // 👇 Aquí defines TODOS los reporteros que quieres usar
   reporter: [
-    // Reporter HTML nativo de Playwright (opcional)
     ['html', { open: process.env.PLAYWRIGHT_HTML_OPEN ?? 'never' }],
-
-    // Reporter de Serenity/JS → genera el HTML narrativo
     ['@serenity-js/playwright-test', { output: 'target/site/serenity' }],
-
-    // Reporter Serenity BDD → genera los archivos JSON del "journey"
     ['@serenity-js/serenity-bdd'],
-
-    // Reporter de consola (para ver pasos en tiempo real)
     ['@serenity-js/console-reporter'],
   ],
 
   use: {
-    baseURL: process.env.BASE_URL ?? 'https://sm-backoffice-qa.vanti.tech',
-    headless: (process.env.HEADLESS ?? 'true') === 'true',
+    headless: false,
+    viewport: null,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
+
+  projects: [
+    {
+      name: 'qa',
+      use: {
+        baseURL: 'https://sm-backoffice-qa.vanti.tech',
+        launchOptions: { args: ['--start-maximized'] },
+      },
+    },
+    {
+      name: 'dev',
+      use: {
+        baseURL: 'https://sm-backoffice-dev.vanti.tech',
+        launchOptions: { args: ['--start-maximized'] },
+      },
+    },
+    {
+      name: 'prod',
+      use: {
+        baseURL: 'https://miagenda.grupovanti.com',
+        launchOptions: { args: ['--start-maximized'] },
+      },
+    },
+
+  //Canales reales / navegadores específicos 
+
+  // // QA en Chrome estable
+  // {
+  //   name: 'chrome-qa',
+  //   use: {
+  //     channel: 'chrome',
+  //     baseURL: 'https://sm-backoffice-qa.vanti.tech',
+  //     viewport: null,
+  //     launchOptions: { args: ['--start-maximized'] },
+  //   },
+  // },
+
+  // // QA en Microsoft Edge estable
+  // {
+  //   name: 'msedge-qa',
+  //   use: {
+  //     channel: 'msedge',
+  //     baseURL: 'https://sm-backoffice-qa.vanti.tech',
+  //     viewport: null,
+  //     launchOptions: { args: ['--start-maximized'] },
+  //   },
+  // },
+
+  // // QA en Firefox
+  // // (Firefox no usa "channel"; se especifica con browserName)
+  // {
+  //   name: 'firefox-qa',
+  //   use: {
+  //     browserName: 'firefox',
+  //     baseURL: 'https://sm-backoffice-qa.vanti.tech',
+  //     viewport: null,
+  //     launchOptions: { args: ['--start-maximized'] },
+  //   },
+  // },
+
+  // // DEV en Chrome
+  // {
+  //   name: 'chrome-dev',
+  //   use: {
+  //     channel: 'chrome',
+  //     baseURL: 'https://sm-backoffice-dev.vanti.tech',
+  //     viewport: null,
+  //     launchOptions: { args: ['--start-maximized'] },
+  //   },
+  // },
+
+  // // PROD en Chrome (recomendado solo para smokes/lectura)
+  // {
+  //   name: 'chrome-prod',
+  //   use: {
+  //     channel: 'chrome',
+  //     baseURL: 'https://miagenda.grupovanti.com',
+  //     viewport: null,
+  //     launchOptions: { args: ['--start-maximized'] },
+  //   },
+  // },
+
+  ],
 });
+

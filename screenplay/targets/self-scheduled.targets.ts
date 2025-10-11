@@ -3,7 +3,7 @@ import { By, PageElement, PageElements } from '@serenity-js/web';
 
 export const SelfScheduledUI = {
   
-  titlePage: PageElement.located(By.xpath('//h1[normalize-space(.)="Ingresa los datos de cuenta"]')),
+  titlePageMain: PageElement.located(By.xpath('//h1[normalize-space(.)="Ingresa los datos de cuenta"]')),
 
   
   accountContract: PageElement.located(By.xpath('//input[@formcontrolname="account_contract"]')),
