@@ -15,26 +15,30 @@
     "qa": "cross-env BASE_URL=https://sm-backoffice-qa.vanti.tech PLAYWRIGHT_HTML_OPEN=never playwright test",
     "dev": "cross-env BASE_URL=https://sm-backoffice-dev.vanti.tech PLAYWRIGHT_HTML_OPEN=never playwright test",
     "prod": "cross-env BASE_URL=https://miagenda.grupovanti.com PLAYWRIGHT_HTML_OPEN=never playwright test",
-    "ci": "cross-env ENV=QA BASE_URL=https://sm-backoffice-qa.vanti.tech PLAYWRIGHT_HTML_OPEN=never playwright test --reporter=list,@serenity-js/serenity-bdd,@serenity-js/console-reporter"
+    "ci": "cross-env ENV=QA BASE_URL=https://sm-backoffice-qa.vanti.tech PLAYWRIGHT_HTML_OPEN=never playwright test --reporter=list,@serenity-js/serenity-bdd,@serenity-js/console-reporter",
+    "serenity:clean": "rimraf target/site/serenity .serenity",
+    "serenity:report": "serenity-bdd run",
+    "serenity:full-report": "npm run serenity:clean && npm test && npm run serenity:report && echo \" Abre: target/site/serenity/index.html\""
   },
   "keywords": [],
   "author": "Felipe Morales",
   "license": "ISC",
   "devDependencies": {
-    "@faker-js/faker": "^10.0.0",
-    "@playwright/test": "^1.55.1",
-    "@serenity-js/assertions": "^3.35.1",
-    "@serenity-js/console-reporter": "^3.35.0",
-    "@serenity-js/core": "^3.35.1",
-    "@serenity-js/playwright": "^3.35.1",
-    "@serenity-js/playwright-test": "^3.35.1",
-    "@serenity-js/serenity-bdd": "^3.14.0",
-    "@serenity-js/web": "^3.35.1",
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.56.1",
+    "@serenity-js/assertions": "^3.35.2",
+    "@serenity-js/console-reporter": "^3.35.2",
+    "@serenity-js/core": "^3.35.2",
+    "@serenity-js/playwright": "^3.35.2",
+    "@serenity-js/playwright-test": "^3.35.2",
+    "@serenity-js/serenity-bdd": "^3.35.2",
+    "@serenity-js/web": "^3.35.2",
     "@types/node": "^24.5.2",
     "@types/papaparse": "^5.3.16",
     "cross-env": "^7.0.3",
     "papaparse": "^5.5.3",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   }
 }
