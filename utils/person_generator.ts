@@ -1,55 +1,48 @@
 import { fakerES as faker } from '@faker-js/faker'; 
 
-let primerNumeroUsado = false;
+let firstNumberUsed = false;
 
-/**
- * Genera un número móvil colombiano válido.
- * La primera persona usa un número fijo y las demás uno aleatorio.
- */
-export function generarNumeroMovilColombiano(): string {
-  if (!primerNumeroUsado) {
-    primerNumeroUsado = true;
+export function makeColMobileDigits(): string {
+  if (!firstNumberUsed) {
+    firstNumberUsed = true;
     return '3102047999';   // Número fijo para la primera persona
   }
 
-  const numero = faker.number.int({ min: 0, max: 999_999_999 })
-    .toString()
-    .padStart(9, '0');
-
-  return `3${numero}`;
+  const number = faker.number.int({ min: 0, max: 999_999_999 }).toString().padStart(9, '0');
+  return `3${number}`;
 }
 
-/**
- * Interfaz de persona ficticia usada en los agendamientos.
- */
-export interface PersonaAleatoria {
-  nombreCliente: string;
-  telefonoCliente: string;
-  codigoSAP: string;
-  nombreAtiende: string;
-  telefonoAtiende: string;
-  correo?: string;
-  ciudad?: string;
+export interface RandomPerson {
+  schedulingName: string;
+  schedulingPhone: string;
+  codeSap: string;
+  attendantName: string;
+  attendantPhone: string;
+  email?: string;
+  city?: string;
 }
 
-/**
- * Genera una persona aleatoria con datos coherentes en español.
- */
-export function generarPersonaAleatoria(): PersonaAleatoria {
+export function generateRandomPerson(): RandomPerson {
+  // Usamos nombres y ciudades en español
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const fullName = `${firstName} ${lastName}`;
+
+  const attendantFirst = faker.person.firstName();
+  const attendantLast = faker.person.lastName();
+  const attendantFullName = `${attendantFirst} ${attendantLast}`;
+
   return {
-    nombreCliente: faker.person.firstName(),     // 👈 nombre realista en español
-    telefonoCliente: generarNumeroMovilColombiano(),
-    codigoSAP: faker.string.numeric(6),
-    nombreAtiende: faker.person.firstName(),
-    telefonoAtiende: generarNumeroMovilColombiano(),
-    correo: faker.internet.email().toLowerCase(),
-    ciudad: faker.location.city(),
+    schedulingName: fullName,
+    schedulingPhone: makeColMobileDigits(),
+    codeSap: faker.string.numeric(6),
+    attendantName: attendantFullName,
+    attendantPhone: makeColMobileDigits(),
+    email: faker.internet.email({ firstName, lastName }).toLowerCase(),
+    city: faker.location.city(),
   };
 }
 
-/**
- * Permite reiniciar el número fijo para nuevas corridas.
- */
-export function reiniciarNumeroFijo() {
-  primerNumeroUsado = false;
+export function resetFixedNumber() {
+  firstNumberUsed = false;
 }

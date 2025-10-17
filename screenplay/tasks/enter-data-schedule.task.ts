@@ -2,12 +2,12 @@ import { Task, Wait } from '@serenity-js/core';
 import { Click, Enter, isVisible, Attribute } from '@serenity-js/web';
 import { Ensure,  equals } from '@serenity-js/assertions';
 import { SelfScheduledUI } from '../targets/self-scheduled.targets';
-import { generarPersonaAleatoria } from '../../utils/person_generator';
+import { generateRandomPerson } from '../../utils/person_generator';
 import { ClickOn } from '../interactions/clics.interactions';
 
 
 export const enterScheduleData = (contractNumber: string) => {
-    const persona = generarPersonaAleatoria();
+    const persona = generateRandomPerson();
 
     return Task.where(`#actor ingresa los datos de cliente, selecciona quien atenderá la cita y continúa`,
 
