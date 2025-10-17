@@ -15,7 +15,9 @@ export const SchedulingUI = {
 
     titleCalendar: PageElement.located(By.xpath('//span[@class="mdc-button__label"]')),
 
-    enabledDays: PageElements.located(By.xpath('//button[contains(@class, "occupied-dates")]')),
+    calendarPanel: PageElement.located(By.xpath('//div[contains(@class,"mat-calendar-content")]')),
+
+    enabledDays: PageElements.located(By.xpath('//table[contains(@class, "mat-calendar-table")]//button[contains(@class, "occupied-dates")]')),
 
     jornadaPanel: PageElement.located(By.xpath("(//div[contains(@class,'flex') and contains(@class,'flex-col') and contains(@class,'gap-2')])[2]")),
 

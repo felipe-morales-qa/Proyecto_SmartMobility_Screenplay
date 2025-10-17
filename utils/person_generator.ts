@@ -1,39 +1,55 @@
-import { faker } from '@faker-js/faker';
+import { fakerES as faker } from '@faker-js/faker'; 
 
 let primerNumeroUsado = false;
 
-export function makeColMobileDigits(): string {
+/**
+ * Genera un número móvil colombiano válido.
+ * La primera persona usa un número fijo y las demás uno aleatorio.
+ */
+export function generarNumeroMovilColombiano(): string {
   if (!primerNumeroUsado) {
     primerNumeroUsado = true;
-    return '3186013707';   // 📌 Número fijo para la primera persona
+    return '3102047999';   // Número fijo para la primera persona
   }
 
-  const numero = faker.number.int({ min: 0, max: 999_999_999 }).toString().padStart(9, '0');
+  const numero = faker.number.int({ min: 0, max: 999_999_999 })
+    .toString()
+    .padStart(9, '0');
+
   return `3${numero}`;
 }
 
+/**
+ * Interfaz de persona ficticia usada en los agendamientos.
+ */
 export interface PersonaAleatoria {
-  schedulingName: string;
-  schedulingPhone: string;
-  codeSap: string;
-  attendantName: string;
-  attendantPhone: string;
-  email?: string;
-  city?: string;
+  nombreCliente: string;
+  telefonoCliente: string;
+  codigoSAP: string;
+  nombreAtiende: string;
+  telefonoAtiende: string;
+  correo?: string;
+  ciudad?: string;
 }
 
+/**
+ * Genera una persona aleatoria con datos coherentes en español.
+ */
 export function generarPersonaAleatoria(): PersonaAleatoria {
   return {
-    schedulingName: faker.person.firstName(),
-    schedulingPhone: makeColMobileDigits(),
-    codeSap: faker.string.numeric(6),
-    attendantName: faker.person.firstName(),
-    attendantPhone: makeColMobileDigits(),
-    email: faker.internet.email().toLowerCase(),
-    city: faker.location.city(),
+    nombreCliente: faker.person.firstName(),     // 👈 nombre realista en español
+    telefonoCliente: generarNumeroMovilColombiano(),
+    codigoSAP: faker.string.numeric(6),
+    nombreAtiende: faker.person.firstName(),
+    telefonoAtiende: generarNumeroMovilColombiano(),
+    correo: faker.internet.email().toLowerCase(),
+    ciudad: faker.location.city(),
   };
 }
 
-export function resetNumeroFijo() {
+/**
+ * Permite reiniciar el número fijo para nuevas corridas.
+ */
+export function reiniciarNumeroFijo() {
   primerNumeroUsado = false;
 }
